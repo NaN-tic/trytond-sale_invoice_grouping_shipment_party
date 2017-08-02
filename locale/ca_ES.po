@@ -2,6 +2,18 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "error:account.invoice:"
+msgid "Party \"%s\" cannot be used as a payer because it has a payer defined"
+msgstr ""
+"El tercer \"%s\" no pot utilitzar-se com a pagador, perquè ja en té un de "
+"definit"
+
+msgctxt "error:sale.sale:"
+msgid "Party \"%s\" cannot be used as a payer because it has a payer defined"
+msgstr ""
+"El tercer \"%s\" no pot utilitzar-se com a pagador, perquè ja en té un de "
+"definit"
+
 msgctxt "field:account.invoice,shipment_party:"
 msgid "Shipment Party"
 msgstr "Tercer de l'enviament"

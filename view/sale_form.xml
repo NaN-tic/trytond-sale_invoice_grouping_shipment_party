@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<data>
+    <xpath expr="/form/label[@name='shipment_party']" position="replace"/>
+    <xpath expr="/form/field[@name='shipment_party']" position="replace"/>
+    <xpath expr="/form/label[@name='party']" position="before">
+        <label name="shipment_party"/>
+        <field name="shipment_party"/>
+    </xpath>
+</data>

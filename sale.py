@@ -9,6 +9,24 @@ class Sale:
     __metaclass__ = PoolMeta
     __name__ = 'sale.sale'
 
+    @classmethod
+    def __setup__(cls):
+        super(Sale,cls).__setup__()
+        cls._error_messages.update({
+                'error_party_payer': ('Party "%s" cannot be used as a payer'
+                    ' because it has a payer defined'),
+                })
+
+    @classmethod
+    def validate(cls, sales):
+        super(Sale, cls).validate(sales)
+        for sale in sales:
+            sale.check_shipment_party()
+
+    def check_shipment_party(self):
+        if self.party.party_sale_payer:
+            self.raise_user_error('error_party_payer', self.party.rec_name)
+
     @property
     def _invoice_grouping_fields(self):
         return super(Sale, self)._invoice_grouping_fields + ('shipment_party',)
@@ -26,3 +44,12 @@ class Sale:
         if not hasattr(invoice, 'shipment_party') and self.shipment_party:
             invoice.shipment_party = self.shipment_party
         return invoice
+
+    def on_change_shipment_party(self):
+        super(Sale, self).on_change_shipment_party()
+        if self.shipment_party:
+            if self.shipment_party.party_sale_payer:
+                self.party = self.shipment_party.party_sale_payer
+            elif not self.party:
+                self.party = self.shipment_party
+            self.on_change_party()

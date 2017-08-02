@@ -62,6 +62,7 @@ Create parties::
     >>> customer.sale_invoice_grouping_method = 'standard'
     >>> customer.save()
     >>> shipment_party = Party(name='Shipment Party')
+    >>> shipment_party.party_sale_payer = customer
     >>> shipment_party.save()
 
 Create product::
@@ -86,14 +87,24 @@ Create product::
     >>> product.template = template
     >>> product.save()
 
-Two sales with shipment party 1::
+Check we cannot save a sale with party payer configured::
 
     >>> Sale = Model.get('sale.sale')
     >>> sale = Sale()
-    >>> sale.party = customer
-    >>> sale.shipment_party = shipment_party
+    >>> sale.shipment_party = customer
+    >>> sale.party = shipment_party
     >>> sale.invoice_method = 'order'
     >>> sale.payment_term = payment_term
+    >>> sale.save()   # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    UserError: ...
+
+Check restoring the shipment_party, the party updates and the sale is allowed::
+
+    >>> sale.shipment_party = shipment_party
+    >>> sale.party.name
+    u'Customer'
     >>> sale_line = sale.lines.new()
     >>> sale_line.product = product
     >>> sale_line.quantity = 2.0
@@ -174,3 +185,24 @@ Two sales without shipment party::
     True
     >>> len(invoice.lines)
     2
+
+Check we cannot save an invoice with party payer configured::
+
+    >>> Invoice = Model.get('account.invoice')
+    >>> invoice = Invoice()
+    >>> invoice.shipment_party = customer
+    >>> invoice.party = shipment_party
+    >>> invoice.invoice_method = 'order'
+    >>> invoice.payment_term = payment_term
+    >>> invoice.save()   # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    UserError: ...
+
+Ensure that changing the shipment_party updates the party and
+the invoice can be saved::
+
+    >>> invoice.shipment_party = shipment_party
+    >>> invoice.party.name
+    u'Customer'
+    >>> invoice.save()

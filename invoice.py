@@ -13,5 +13,34 @@ class Invoice:
     shipment_party = fields.Many2One('party.party', 'Shipment Party',
         states={
             'readonly': (Eval('state') != 'draft'),
+            'invisible': (Eval('type') == 'in'),
             },
         depends=['state'])
+
+    @classmethod
+    def __setup__(cls):
+        super(Invoice,cls).__setup__()
+        cls._error_messages.update({
+                'error_party_payer': ('Party "%s" cannot be used as a payer'
+                    ' because it has a payer defined'),
+                })
+
+    @classmethod
+    def validate(cls, invoices):
+        super(Invoice, cls).validate(invoices)
+        for invoice in invoices:
+            invoice.check_shipment_party()
+
+    def check_shipment_party(self):
+        if (self.state == 'draft' and self.type == 'out'
+                and self.party.party_sale_payer):
+            self.raise_user_error('error_party_payer', self.party.rec_name)
+
+    @fields.depends('shipment_party', methods=['party'])
+    def on_change_shipment_party(self):
+         if self.shipment_party:
+            if self.shipment_party.party_sale_payer:
+                self.party = self.shipment_party.party_sale_payer
+            else:
+                self.party = self.shipment_party
+            self.on_change_party()
