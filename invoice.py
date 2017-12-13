@@ -44,3 +44,6 @@ class Invoice:
             else:
                 self.party = self.shipment_party
             self.on_change_party()
+
+            if hasattr(self, 'invoice_discount'):
+                self.invoice_discount = self.on_change_with_invoice_discount()
