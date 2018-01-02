@@ -13,7 +13,7 @@ class Invoice:
     shipment_party = fields.Many2One('party.party', 'Shipment Party',
         states={
             'readonly': (Eval('state') != 'draft'),
-            'invisible': (Eval('type') == 'in'),
+            'invisible': (Eval('type') in ('in_invoice', 'in_credit_note')),
             },
         depends=['state'])
 
@@ -32,7 +32,8 @@ class Invoice:
             invoice.check_shipment_party()
 
     def check_shipment_party(self):
-        if (self.state == 'draft' and self.type == 'out'
+        if (self.state == 'draft'
+                and self.type in ('out_invoice', 'out_credit_note')
                 and self.party.party_sale_payer):
             self.raise_user_error('error_party_payer', self.party.rec_name)
 
