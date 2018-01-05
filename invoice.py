@@ -13,9 +13,9 @@ class Invoice:
     shipment_party = fields.Many2One('party.party', 'Shipment Party',
         states={
             'readonly': (Eval('state') != 'draft'),
-            'invisible': (Eval('type') in ('in_invoice', 'in_credit_note')),
+            'invisible': Eval('type').in_(['in_invoice', 'in_credit_note']),
             },
-        depends=['state'])
+        depends=['state', 'type'])
 
     @classmethod
     def __setup__(cls):
