@@ -50,6 +50,4 @@ class Sale:
         if self.shipment_party:
             if self.shipment_party.party_sale_payer:
                 self.party = self.shipment_party.party_sale_payer
-            else:
-                self.party = self.shipment_party
-            self.on_change_party()
+                self.on_change_party()
