@@ -7,8 +7,7 @@ from trytond.pyson import Eval
 __all__ = ['Invoice']
 
 
-class Invoice:
-    __metaclass__ = PoolMeta
+class Invoice(metaclass=PoolMeta):
     __name__ = 'account.invoice'
     shipment_party = fields.Many2One('party.party', 'Shipment Party',
         states={
@@ -36,9 +35,9 @@ class Invoice:
                 and self.party.party_sale_payer):
             self.raise_user_error('error_party_payer', self.party.rec_name)
 
-    @fields.depends('shipment_party', methods=['party'])
+    @fields.depends('shipment_party', methods=['on_change_party'])
     def on_change_shipment_party(self):
-         if self.shipment_party:
+        if self.shipment_party:
             if self.shipment_party.party_sale_payer:
                 self.party = self.shipment_party.party_sale_payer
             else:
@@ -47,3 +46,11 @@ class Invoice:
 
             if hasattr(self, 'invoice_discount'):
                 self.invoice_discount = self.on_change_with_invoice_discount()
+
+        if hasattr(self, 'shipment_address'):
+            delivery_address = None
+            if self.party and not self.shipment_party:
+                delivery_address = self.party.address_get(type='delivery')
+            if self.shipment_party:
+                delivery_address = self.shipment_party.address_get(type='delivery')
+            self.shipment_address = delivery_address

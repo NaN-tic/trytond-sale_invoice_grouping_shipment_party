@@ -8,6 +8,7 @@ Imports::
     >>> from dateutil.relativedelta import relativedelta
     >>> from decimal import Decimal
     >>> from proteus import config, Model, Wizard
+    >>> from trytond.tests.tools import activate_modules
     >>> from trytond.modules.company.tests.tools import create_company, \
     ...     get_company
     >>> from trytond.modules.account.tests.tools import create_fiscalyear, \
@@ -20,17 +21,9 @@ Imports::
     >>> next_biweekly = today + relativedelta(day=20)
     >>> next_month = today + relativedelta(months=1)
 
-Create database::
-
-    >>> config = config.set_trytond()
-    >>> config.pool.test = True
-
 Install sale_invoice_grouping_shipment_party::
 
-    >>> Module = Model.get('ir.module')
-    >>> sale_module, = Module.find([('name', '=', 'sale_invoice_grouping_shipment_party')])
-    >>> sale_module.click('install')
-    >>> Wizard('ir.module.install_upgrade').execute('upgrade')
+    >>> config = activate_modules('sale_invoice_grouping_shipment_party')
 
 Create company::
 
@@ -65,6 +58,15 @@ Create parties::
     >>> shipment_party.party_sale_payer = customer
     >>> shipment_party.save()
 
+Create account category::
+
+    >>> ProductCategory = Model.get('product.category')
+    >>> account_category = ProductCategory(name="Account Category")
+    >>> account_category.accounting = True
+    >>> account_category.account_expense = expense
+    >>> account_category.account_revenue = revenue
+    >>> account_category.save()
+
 Create product::
 
     >>> ProductUom = Model.get('product.uom')
@@ -79,10 +81,7 @@ Create product::
     >>> template.purchasable = True
     >>> template.salable = True
     >>> template.list_price = Decimal('10')
-    >>> template.cost_price = Decimal('5')
-    >>> template.cost_price_method = 'fixed'
-    >>> template.account_expense = expense
-    >>> template.account_revenue = revenue
+    >>> template.account_category = account_category
     >>> template.save()
     >>> product.template = template
     >>> product.save()
@@ -104,7 +103,7 @@ Check restoring the shipment_party, the party updates and the sale is allowed::
 
     >>> sale.shipment_party = shipment_party
     >>> sale.party.name
-    u'Customer'
+    'Customer'
     >>> sale_line = sale.lines.new()
     >>> sale_line.product = product
     >>> sale_line.quantity = 2.0
@@ -112,7 +111,7 @@ Check restoring the shipment_party, the party updates and the sale is allowed::
     >>> sale.click('confirm')
     >>> sale.click('process')
     >>> sale.state
-    u'processing'
+    'processing'
     >>> invoice, = sale.invoices
     >>> invoice.shipment_party == shipment_party
     True
@@ -133,7 +132,7 @@ Check restoring the shipment_party, the party updates and the sale is allowed::
     >>> sale.click('confirm')
     >>> sale.click('process')
     >>> sale.state
-    u'processing'
+    'processing'
     >>> invoice, = sale.invoices
     >>> invoice.shipment_party == shipment_party
     True
@@ -156,7 +155,7 @@ Two sales without shipment party::
     >>> sale.click('confirm')
     >>> sale.click('process')
     >>> sale.state
-    u'processing'
+    'processing'
     >>> invoice, = sale.invoices
     >>> invoice.shipment_party == None
     True
@@ -177,7 +176,7 @@ Two sales without shipment party::
     >>> sale.click('confirm')
     >>> sale.click('process')
     >>> sale.state
-    u'processing'
+    'processing'
     >>> invoice, = sale.invoices
     >>> invoice.shipment_party == None
     True
@@ -204,5 +203,5 @@ the invoice can be saved::
 
     >>> invoice.shipment_party = shipment_party
     >>> invoice.party.name
-    u'Customer'
+    'Customer'
     >>> invoice.save()
