@@ -8,6 +8,7 @@ Imports::
     >>> from dateutil.relativedelta import relativedelta
     >>> from decimal import Decimal
     >>> from proteus import config, Model, Wizard
+    >>> from trytond.tests.tools import activate_modules
     >>> from trytond.modules.company.tests.tools import create_company, \
     ...     get_company
     >>> from trytond.modules.account.tests.tools import create_fiscalyear, \
@@ -20,17 +21,9 @@ Imports::
     >>> next_biweekly = today + relativedelta(day=20)
     >>> next_month = today + relativedelta(months=1)
 
-Create database::
+Activate sale_invoice_grouping_shipment_party::
 
-    >>> config = config.set_trytond()
-    >>> config.pool.test = True
-
-Install sale_invoice_grouping_shipment_party::
-
-    >>> Module = Model.get('ir.module')
-    >>> sale_module, = Module.find([('name', '=', 'sale_invoice_grouping_shipment_party')])
-    >>> sale_module.click('install')
-    >>> Wizard('ir.module.install_upgrade').execute('upgrade')
+    >>> config = activate_modules('sale_invoice_grouping_shipment_party')
 
 Create company::
 
