@@ -34,9 +34,13 @@ class Sale:
     def _get_grouped_invoice_domain(self, invoice):
         invoice_domain = super(Sale, self)._get_grouped_invoice_domain(invoice)
         if self.shipment_party:
-            invoice_domain[
-                invoice_domain.index(('shipment_party', '=', None))
-                ] = ('shipment_party', '=', self.shipment_party)
+            if ('shipment_party', '=', None) in invoice_domain:
+                invoice_domain[
+                    invoice_domain.index(('shipment_party', '=', None))
+                    ] = ('shipment_party', '=', self.shipment_party)
+            else:
+                invoice_domain.append(
+                    ('shipment_party', '=', self.shipment_party))
         return invoice_domain
 
     def _get_invoice_sale(self):
