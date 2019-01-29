@@ -54,3 +54,9 @@ class Invoice(metaclass=PoolMeta):
             if self.shipment_party:
                 delivery_address = self.shipment_party.address_get(type='delivery')
             self.shipment_address = delivery_address
+
+    def _credit(self):
+        res = super(Invoice, self)._credit()
+        res['shipment_party'] = (self.shipment_party
+            and self.shipment_party.id or None)
+        return res
