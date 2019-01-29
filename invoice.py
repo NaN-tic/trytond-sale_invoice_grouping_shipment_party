@@ -48,3 +48,9 @@ class Invoice:
 
             if hasattr(self, 'invoice_discount'):
                 self.invoice_discount = self.on_change_with_invoice_discount()
+
+    def _credit(self):
+        res = super(Invoice, self)._credit()
+        res['shipment_party'] = (self.shipment_party
+            and self.shipment_party.id or None)
+        return res
