@@ -1,20 +1,14 @@
 # This file is part of Tryton.  The COPYRIGHT file at the top level of
 # this repository contains the full copyright notices and license terms.
 from trytond.pool import PoolMeta
+from trytond.i18n import gettext
+from trytond.exceptions import UserError
 
 __all__ = ['Sale']
 
 
 class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
-
-    @classmethod
-    def __setup__(cls):
-        super(Sale,cls).__setup__()
-        cls._error_messages.update({
-                'error_party_payer': ('Party "%s" cannot be used as a payer'
-                    ' because it has a payer defined'),
-                })
 
     @classmethod
     def validate(cls, sales):
@@ -24,7 +18,10 @@ class Sale(metaclass=PoolMeta):
 
     def check_shipment_party(self):
         if self.party.party_sale_payer:
-            self.raise_user_error('error_party_payer', self.party.rec_name)
+            raise UserError(
+                gettext('sale_invoice_grouping_shipment_party.msg_error_party_payer',
+                name=self.party.rec_name,
+                ))
 
     @property
     def _invoice_grouping_fields(self):

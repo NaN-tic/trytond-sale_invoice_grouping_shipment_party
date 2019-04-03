@@ -3,6 +3,8 @@
 from trytond.model import fields
 from trytond.pool import PoolMeta
 from trytond.pyson import Eval
+from trytond.i18n import gettext
+from trytond.exceptions import UserError
 
 __all__ = ['Invoice']
 
@@ -17,14 +19,6 @@ class Invoice(metaclass=PoolMeta):
         depends=['state'])
 
     @classmethod
-    def __setup__(cls):
-        super(Invoice,cls).__setup__()
-        cls._error_messages.update({
-                'error_party_payer': ('Party "%s" cannot be used as a payer'
-                    ' because it has a payer defined'),
-                })
-
-    @classmethod
     def validate(cls, invoices):
         super(Invoice, cls).validate(invoices)
         for invoice in invoices:
@@ -33,7 +27,10 @@ class Invoice(metaclass=PoolMeta):
     def check_shipment_party(self):
         if (self.state == 'draft' and self.type == 'out'
                 and self.party.party_sale_payer):
-            self.raise_user_error('error_party_payer', self.party.rec_name)
+            raise UserError(
+                gettext('sale_invoice_grouping_shipment_party.msg_error_party_payer',
+                name=self.party.rec_name,
+                ))
 
     @fields.depends('shipment_party', methods=['on_change_party'])
     def on_change_shipment_party(self):
