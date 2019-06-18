@@ -1,6 +1,7 @@
 # This file is part of Tryton.  The COPYRIGHT file at the top level of
 # this repository contains the full copyright notices and license terms.
-from trytond.pool import PoolMeta
+from trytond.pool import PoolMeta, Pool
+from trytond.model import fields
 from trytond.i18n import gettext
 from trytond.exceptions import UserError
 
@@ -53,3 +54,15 @@ class Sale(metaclass=PoolMeta):
             else:
                 self.party = self.shipment_party
             self.on_change_party()
+
+
+    @fields.depends('carrier')
+    def on_change_party(self):
+        super(Sale, self).on_change_party()
+        Config = Pool().get('sale.configuration')
+        config = Config(1)
+        if config:
+            config = config.sale_default_party_carrier
+        if config == 'shipment_party' and self.shipment_party:
+            if self.shipment_party.carrier:
+                self.carrier = self.shipment_party.carrier

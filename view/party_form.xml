@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+copyright notices and license types. -->
+<data>
+    <xpath expr="/form/notebook/page[@id='sale']/field[@name='sale_price_list']" position="after">
+        <label name="party_sale_payer"/>
+        <field name="party_sale_payer"/>
+    </xpath>
+</data>
