@@ -24,11 +24,6 @@ class Configuration(metaclass=PoolMeta):
             return pool.get('sale.configuration.sale_carrier')
         return super(Configuration, cls).multivalue_model(field)
 
-    @classmethod
-    def default_sale_party_carrier(cls, **pattern):
-        return cls.multivalue_model(
-            'sale_default_party_carrier').default_sale_party_carrier()
-
 
 class ConfigurationCarrier(metaclass=PoolMeta):
     __name__ = 'sale.configuration.sale_carrier'
