@@ -78,7 +78,6 @@ Create product::
     >>> template.name = 'product'
     >>> template.default_uom = unit
     >>> template.type = 'goods'
-    >>> template.purchasable = True
     >>> template.salable = True
     >>> template.list_price = Decimal('10')
     >>> template.account_category = account_category
@@ -191,7 +190,6 @@ Check we cannot save an invoice with party payer configured::
     >>> invoice = Invoice()
     >>> invoice.shipment_party = customer
     >>> invoice.party = shipment_party
-    >>> invoice.invoice_method = 'order'
     >>> invoice.payment_term = payment_term
     >>> invoice.save()   # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
