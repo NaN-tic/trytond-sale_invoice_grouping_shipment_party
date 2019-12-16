@@ -1,11 +1,5 @@
-# This file is part of Tryton.  The COPYRIGHT file at the top level of
-# this repository contains the full copyright notices and license terms.
-from trytond.model import fields, ModelSQL
-from trytond.pool import Pool, PoolMeta
-from trytond.modules.company.model import (
-    CompanyMultiValueMixin, CompanyValueMixin)
-
-__all__ = ['Configuration', 'ConfigurationCarrier']
+from trytond.model import fields
+from trytond.pool import PoolMeta, Pool
 
 sale_default_party_carrier = fields.Selection([
         (None, 'Party (default)'),
@@ -28,3 +22,18 @@ class Configuration(metaclass=PoolMeta):
 class ConfigurationCarrier(metaclass=PoolMeta):
     __name__ = 'sale.configuration.sale_carrier'
     sale_default_party_carrier = sale_default_party_carrier
+
+
+class Sale(metaclass=PoolMeta):
+    __name__ = 'sale.sale'
+
+    @fields.depends('carrier')
+    def on_change_party(self):
+        super(Sale, self).on_change_party()
+        Config = Pool().get('sale.configuration')
+        config = Config(1)
+        if config:
+            config = config.sale_default_party_carrier
+        if config == 'shipment_party' and self.shipment_party:
+            if self.shipment_party.carrier:
+                self.carrier = self.shipment_party.carrier
