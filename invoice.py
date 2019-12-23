@@ -27,10 +27,8 @@ class Invoice(metaclass=PoolMeta):
     def check_shipment_party(self):
         if (self.state == 'draft' and self.type == 'out'
                 and self.party.party_sale_payer):
-            raise UserError(
-                gettext('sale_invoice_grouping_shipment_party.msg_error_party_payer',
-                name=self.party.rec_name,
-                ))
+            raise UserError(gettext('sale_invoice_grouping_shipment_party.'
+                    'msg_error_party_payer', name=self.party.rec_name,))
 
     @fields.depends('shipment_party', methods=['on_change_party'])
     def on_change_shipment_party(self):
@@ -49,7 +47,8 @@ class Invoice(metaclass=PoolMeta):
             if self.party and not self.shipment_party:
                 delivery_address = self.party.address_get(type='delivery')
             if self.shipment_party:
-                delivery_address = self.shipment_party.address_get(type='delivery')
+                delivery_address = self.shipment_party.address_get(
+                    type='delivery')
             self.shipment_address = delivery_address
 
     def _credit(self):
