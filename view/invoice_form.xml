@@ -2,7 +2,7 @@
 <!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
 this repository contains the full copyright notices and license terms. -->
 <data>
-    <xpath expr="/form/label[@name='party']" position="before" >
+    <xpath expr="/form/field[@name='reference']" position="after" >
         <label name="shipment_party"/>
         <field name="shipment_party"/>
     </xpath>
