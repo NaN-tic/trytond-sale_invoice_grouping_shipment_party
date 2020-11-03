@@ -48,6 +48,7 @@ class Sale(metaclass=PoolMeta):
         if self.shipment_party:
             if self.shipment_party.party_sale_payer:
                 self.party = self.shipment_party.party_sale_payer
-            else:
+            # keep party in case has a party in the sale
+            elif not self.party:
                 self.party = self.shipment_party
             self.on_change_party()

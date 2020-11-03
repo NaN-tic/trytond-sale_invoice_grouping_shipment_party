@@ -47,7 +47,7 @@ class SaleInvoiceGroupingShipmentPartyTestCase(ModuleTestCase):
 
         sale.shipment_party = party1
         sale.on_change_shipment_party()
-        self.assertEqual(sale.party, party1)
+        self.assertEqual(sale.party, party2)
 
 def suite():
     suite = trytond.tests.test_tryton.suite()
