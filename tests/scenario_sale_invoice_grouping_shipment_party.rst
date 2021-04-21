@@ -92,7 +92,6 @@ Check we cannot save a sale with party payer configured::
     >>> sale.shipment_party = customer
     >>> sale.party = shipment_party
     >>> sale.invoice_method = 'order'
-    >>> sale.payment_term = payment_term
     >>> sale.save()   # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
         ...
@@ -101,6 +100,7 @@ Check we cannot save a sale with party payer configured::
 Check restoring the shipment_party, the party updates and the sale is allowed::
 
     >>> sale.shipment_party = shipment_party
+    >>> sale.payment_term = payment_term
     >>> sale.party.name
     'Customer'
     >>> sale_line = sale.lines.new()
