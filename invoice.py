@@ -51,7 +51,7 @@ class Invoice(metaclass=PoolMeta):
                     type='delivery')
             self.shipment_address = delivery_address
 
-    def _credit(self):
-        credit = super()._credit()
+    def _credit(self, **values):
+        credit = super()._credit(**values)
         credit.shipment_party = self.shipment_party
         return credit

@@ -183,6 +183,19 @@ Two sales without shipment party::
     True
     >>> len(invoice.lines)
     2
+    >>> invoice.click('post')
+    >>> invoice.state == 'posted'
+    True
+
+Credit invoice with refund::
+
+    >>> credit = Wizard('account.invoice.credit', [invoice])
+    >>> credit.form.with_refund = True
+    >>> credit.form.invoice_date = invoice.invoice_date
+    >>> credit.execute('credit')
+    >>> invoice.reload()
+    >>> invoice.state
+    'cancelled'
 
 Check we cannot save an invoice with party payer configured::
 
