@@ -10,6 +10,10 @@ from trytond.modules.company.tests import CompanyTestMixin
 class SaleInvoiceGroupingShipmentPartyTestCase(CompanyTestMixin, ModuleTestCase):
     'Test SaleInvoiceGroupingShipmentParty module'
     module = 'sale_invoice_grouping_shipment_party'
+    extras = ['sale_carrier',
+              'account_invoice_discount_global',
+              'sale_invoice_grouping_by_address'
+              ]
 
     @with_transaction()
     def test_sale(self):
