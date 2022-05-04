@@ -15,8 +15,9 @@ class Invoice(metaclass=PoolMeta):
         states={
             'readonly': (Eval('state') != 'draft'),
             'invisible': (Eval('type') == 'in'),
-            },
-        depends=['state'])
+        }, context={
+            'company': Eval('company'),
+        }, depends=['state', 'company'])
 
     @classmethod
     def validate(cls, invoices):
