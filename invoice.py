@@ -22,7 +22,7 @@ class Invoice(metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super(Invoice, cls).__setup__()
-        if hasattr(cls, 'shipment_party'):
+        if hasattr(cls, 'shipment_party') and hasattr(cls, 'shipment_address'):
             new_domain = [
                 ('party', '=', If(Bool(Eval('shipment_party')),
                         Eval('shipment_party'), Eval('party'))),
