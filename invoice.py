@@ -28,8 +28,8 @@ class Invoice(metaclass=PoolMeta):
                         Eval('shipment_party'), Eval('party'))),
                 ]
             cls.shipment_address.domain = new_domain
-            cls.shipment_address.depends.append('shipment_party')
-            cls.on_change_party.depends.add('shipment_party')
+            cls.shipment_address.depends.add('shipment_party')
+            cls.party.depends.add('shipment_party')
 
     @classmethod
     def validate(cls, invoices):
