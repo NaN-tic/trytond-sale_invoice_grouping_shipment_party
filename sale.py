@@ -35,6 +35,8 @@ class Sale(metaclass=PoolMeta):
             else:
                 invoice_domain.append(
                     ('shipment_party', '=', self.shipment_party))
+        else:
+                invoice_domain.append(('shipment_party', '=', None))
         return invoice_domain
 
     def _get_invoice_sale(self):
