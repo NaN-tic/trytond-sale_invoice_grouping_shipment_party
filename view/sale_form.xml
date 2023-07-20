@@ -8,4 +8,10 @@ this repository contains the full copyright notices and license terms. -->
         <label name="shipment_party"/>
         <field name="shipment_party"/>
     </xpath>
+    <xpath expr="/form/field[@name='invoice_address']" position="replace">
+        <field name="invoice_address"/>
+    </xpath>
+    <xpath expr="/form/field[@name='shipment_address']" position="replace">
+        <field name="shipment_address"/>
+    </xpath>
 </data>
