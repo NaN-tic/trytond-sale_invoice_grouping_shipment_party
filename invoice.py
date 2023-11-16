@@ -16,7 +16,7 @@ class Invoice(metaclass=PoolMeta):
             'readonly': (Eval('state') != 'draft'),
             'invisible': (Eval('type') == 'in'),
         }, context={
-            'company': Eval('company'),
+            'company': Eval('company', -1),
         }, depends=['state', 'company'])
 
     @classmethod
