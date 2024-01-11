@@ -17,7 +17,7 @@ class Invoice(metaclass=PoolMeta):
             'invisible': (Eval('type') == 'in'),
         }, context={
             'company': Eval('company', -1),
-        }, depends=['state', 'company'])
+        }, depends=['company'])
 
     @classmethod
     def __setup__(cls):
