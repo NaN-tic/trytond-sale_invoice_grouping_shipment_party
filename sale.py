@@ -1,6 +1,7 @@
 # This file is part of Tryton.  The COPYRIGHT file at the top level of
 # this repository contains the full copyright notices and license terms.
 from trytond.pool import PoolMeta
+from trytond.model import fields
 from trytond.i18n import gettext
 from trytond.exceptions import UserError
 
@@ -45,6 +46,7 @@ class Sale(metaclass=PoolMeta):
             invoice.shipment_party = self.shipment_party
         return invoice
 
+    @fields.depends('lines')
     def on_change_shipment_party(self):
         super(Sale, self).on_change_shipment_party()
         if self.shipment_party:
