@@ -3,7 +3,7 @@
 from trytond.pool import PoolMeta
 from trytond.model import fields
 from trytond.i18n import gettext
-from trytond.exceptions import UserError
+from trytond.model.exceptions import ValidationError
 
 __all__ = ['Sale']
 
@@ -19,7 +19,7 @@ class Sale(metaclass=PoolMeta):
 
     def check_shipment_party(self):
         if self.party.party_sale_payer:
-            raise UserError(gettext('sale_invoice_grouping_shipment_party.'
+            raise ValidationError(gettext('sale_invoice_grouping_shipment_party.'
                     'msg_error_party_payer', name=self.party.rec_name))
 
     @property
