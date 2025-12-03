@@ -40,8 +40,8 @@ class Sale(metaclass=PoolMeta):
                 invoice_domain.append(('shipment_party', '=', None))
         return invoice_domain
 
-    def _get_invoice_sale(self):
-        invoice = super(Sale, self)._get_invoice_sale()
+    def _get_invoice(self):
+        invoice = super(Sale, self)._get_invoice()
         if not hasattr(invoice, 'shipment_party') and self.shipment_party:
             invoice.shipment_party = self.shipment_party
         return invoice
