@@ -5,8 +5,6 @@ from trytond.model import fields
 from trytond.i18n import gettext
 from trytond.model.exceptions import ValidationError
 
-__all__ = ['Sale']
-
 
 class Sale(metaclass=PoolMeta):
     __name__ = 'sale.sale'
