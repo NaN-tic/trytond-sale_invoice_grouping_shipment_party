@@ -177,7 +177,7 @@ class Test(unittest.TestCase):
 
         # Check we cannot save an invoice with party payer configured
         Invoice = Model.get('account.invoice')
-        invoice = Invoice()
+        invoice = Invoice(type='out')
         invoice.shipment_party = customer
         invoice.party = shipment_party
         invoice.payment_term = payment_term
