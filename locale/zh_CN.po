@@ -1,0 +1,53 @@
+#
+msgid ""
+msgstr ""
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "field:account.invoice,shipment_party:"
+msgid "Shipment Party"
+msgstr "收货往来单位"
+
+msgctxt "field:party.party,party_sale_payer:"
+msgid "Party Sale Payer"
+msgstr "往来单位销售付款方"
+
+msgctxt "field:sale.configuration,sale_default_party_carrier:"
+msgid "Default Party Carrier"
+msgstr "默认往来单位承运商"
+
+msgctxt "field:sale.configuration.sale_carrier,sale_default_party_carrier:"
+msgid "Default Party Carrier"
+msgstr "默认往来单位承运商"
+
+msgctxt "help:party.party,party_sale_payer:"
+msgid ""
+"Default party payer when selecting a shipment party on sales or invoices."
+msgstr "在销售单或发票中选择收货往来单位时使用的默认付款方。"
+
+#, python-format
+msgctxt "model:ir.message,text:msg_error_party_payer"
+msgid ""
+"Party \"%(name)s\" cannot be used as a payer because it has a payer defined"
+msgstr "往来单位“%(name)s”已定义付款方，因此不能作为付款方"
+
+msgctxt "selection:sale.configuration,sale_default_party_carrier:"
+msgid "Party (default)"
+msgstr "往来单位（默认）"
+
+msgctxt "selection:sale.configuration,sale_default_party_carrier:"
+msgid "Shipment Party"
+msgstr "收货往来单位"
+
+msgctxt ""
+"selection:sale.configuration.sale_carrier,sale_default_party_carrier:"
+msgid "Party (default)"
+msgstr "往来单位（默认）"
+
+msgctxt ""
+"selection:sale.configuration.sale_carrier,sale_default_party_carrier:"
+msgid "Shipment Party"
+msgstr "收货往来单位"
